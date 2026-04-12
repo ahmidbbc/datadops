@@ -1,0 +1,24 @@
+{
+  "name": "datadops",
+  "version": "1.0.0",
+  "description": "Intelligent Datadog workflows for incident response, performance investigation, and deployment validation. Transforms raw monitoring data into actionable insights.",
+  "author": {
+    "name": "Abdelhamid Benmeziane"
+  },
+  "license": "MIT",
+  "keywords": [
+    "datadog",
+    "monitoring",
+    "observability",
+    "incident-response",
+    "performance",
+    "deployment",
+    "apm",
+    "metrics",
+    "logs",
+    "sre",
+    "devops"
+  ],
+  "homepage": "https://github.mpi-internal.com/abdelhamid-benmeziane/datadops",
+  "repository": "https://github.mpi-internal.com/abdelhamid-benmeziane/datadops"
+}

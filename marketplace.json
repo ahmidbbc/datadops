@@ -1,0 +1,40 @@
+{
+  "name": "datadops-marketplace",
+  "owner": {
+    "name": "Abdelhamid Benmeziane",
+    "email": "abdelhamid.benmeziane@adevinta.com"
+  },
+  "metadata": {
+    "description": "Advanced Datadog workflows and intelligent monitoring automation",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "datadops",
+      "source": "./",
+      "description": "Intelligent Datadog workflows for incident response, performance investigation, and deployment validation. Transforms raw monitoring data into actionable insights.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Abdelhamid Benmeziane",
+        "email": "abdelhamid.benmeziane@adevinta.com"
+      },
+      "homepage": "https://github.mpi-internal.com/abdelhamid-benmeziane/datadops",
+      "repository": "https://github.mpi-internal.com/abdelhamid-benmeziane/datadops",
+      "license": "MIT",
+      "keywords": [
+        "datadog",
+        "monitoring",
+        "observability",
+        "incident-response",
+        "performance",
+        "deployment",
+        "apm",
+        "metrics",
+        "logs",
+        "sre",
+        "devops"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

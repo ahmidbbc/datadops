@@ -1,0 +1,99 @@
+{
+  "plugin_name": "datadops",
+  "test_cases": [
+    {
+      "id": 1,
+      "skill": "incident-response",
+      "prompt": "Our payment service is having issues in prod - can you investigate the incident and provide next steps? The service name is 'payment-api'",
+      "expected_workflow": [
+        "Assess current monitor status for payment-api service",
+        "Analyze error logs patterns from last 2 hours",
+        "Check APM traces for payment-api failures",
+        "Correlate with recent deployments or infrastructure events",
+        "Provide structured incident assessment with severity and next steps"
+      ],
+      "expected_output": "Complete incident analysis with root cause hypothesis, impact assessment, and actionable remediation steps",
+      "environment": "prod"
+    },
+    {
+      "id": 2,
+      "skill": "performance-investigation",
+      "prompt": "I'm investigating a performance issue with our checkout service. Can you analyze what's causing the slowdown?",
+      "expected_workflow": [
+        "Analyze checkout service APM traces for bottlenecks",
+        "Check database query performance in checkout flow",
+        "Review CPU/memory utilization patterns",
+        "Identify external service dependencies impact",
+        "Generate optimization recommendations"
+      ],
+      "expected_output": "Performance analysis with bottleneck identification, resource correlation, and specific optimization recommendations",
+      "environment": "prod"
+    },
+    {
+      "id": 3,
+      "skill": "service-health-overview",
+      "prompt": "Give me a health overview of our production infrastructure and critical services",
+      "expected_workflow": [
+        "Check overall infrastructure health (hosts, services)",
+        "Assess critical service health scores",
+        "Review active alerts and their severity",
+        "Summarize recent events and deployments",
+        "Provide actionable health recommendations"
+      ],
+      "expected_output": "Comprehensive health dashboard with scores, alert summary, and priority actions",
+      "environment": "prod"
+    },
+    {
+      "id": 4,
+      "skill": "deployment-health-check",
+      "prompt": "I just deployed version 2.1.4 of the payment service. Validate that the deployment is healthy.",
+      "expected_workflow": [
+        "Identify deployment event for payment service v2.1.4",
+        "Compare pre/post deployment metrics",
+        "Analyze error rates and latency changes",
+        "Check infrastructure resource usage",
+        "Generate deployment health score and recommendations"
+      ],
+      "expected_output": "Deployment validation with before/after comparison, health score, and go/no-go recommendation",
+      "environment": "prod"
+    },
+    {
+      "id": 5,
+      "skill": "incident-response",
+      "prompt": "Multiple services are alerting simultaneously. Help me understand what's happening and prioritize the response.",
+      "expected_workflow": [
+        "Map all current alerts and their relationships",
+        "Identify common root causes or infrastructure issues",
+        "Analyze service dependency impact",
+        "Determine primary vs secondary failures",
+        "Provide prioritized response plan"
+      ],
+      "expected_output": "Cross-service incident analysis with dependency mapping, root cause assessment, and response prioritization",
+      "environment": "prod"
+    },
+    {
+      "id": 6,
+      "skill": "performance-investigation",
+      "prompt": "CPU usage spiked on our web servers in staging. Investigate the root cause and impact.",
+      "expected_workflow": [
+        "Analyze CPU utilization patterns and spikes",
+        "Correlate with application logs and processes",
+        "Check memory usage and other resource constraints",
+        "Review recent deployments or configuration changes",
+        "Assess performance impact on user experience"
+      ],
+      "expected_output": "Resource utilization analysis with root cause identification and performance impact assessment",
+      "environment": "staging"
+    }
+  ],
+  "skill_coverage": {
+    "incident-response": 2,
+    "performance-investigation": 2,
+    "service-health-overview": 1,
+    "deployment-health-check": 1
+  },
+  "environment_coverage": {
+    "prod": 5,
+    "staging": 1
+  }
+}

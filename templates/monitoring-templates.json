@@ -1,0 +1,210 @@
+{
+  "templates": {
+    "dashboards": {
+      "microservice-health": {
+        "name": "Microservice Health Dashboard",
+        "description": "Comprehensive health monitoring for microservices",
+        "widgets": [
+          {
+            "type": "timeseries",
+            "title": "Request Rate & Success Rate",
+            "metrics": [
+              "avg:http.requests{service:$service}",
+              "avg:http.requests{service:$service,status:2xx}/avg:http.requests{service:$service}*100"
+            ]
+          },
+          {
+            "type": "timeseries",
+            "title": "Response Time Percentiles",
+            "metrics": [
+              "avg:http.response_time.p50{service:$service}",
+              "avg:http.response_time.p95{service:$service}",
+              "avg:http.response_time.p99{service:$service}"
+            ]
+          },
+          {
+            "type": "timeseries",
+            "title": "Error Rate",
+            "metrics": [
+              "avg:http.requests{service:$service,status:4xx}/avg:http.requests{service:$service}*100",
+              "avg:http.requests{service:$service,status:5xx}/avg:http.requests{service:$service}*100"
+            ]
+          },
+          {
+            "type": "timeseries",
+            "title": "Infrastructure Metrics",
+            "metrics": [
+              "avg:system.cpu.user{service:$service}",
+              "avg:system.mem.pct_usable{service:$service}",
+              "avg:kubernetes.cpu.usage.total{service:$service}"
+            ]
+          }
+        ],
+        "template_variables": [
+          {
+            "name": "service",
+            "prefix": "service",
+            "default": "*"
+          },
+          {
+            "name": "env",
+            "prefix": "env",
+            "default": "prod"
+          }
+        ]
+      },
+      "database-performance": {
+        "name": "Database Performance Dashboard",
+        "description": "Database monitoring and optimization",
+        "widgets": [
+          {
+            "type": "timeseries",
+            "title": "Query Performance",
+            "metrics": [
+              "avg:postgresql.queries_per_second{service:$service}",
+              "avg:postgresql.query_time.avg{service:$service}",
+              "avg:postgresql.query_time.p95{service:$service}"
+            ]
+          },
+          {
+            "type": "timeseries",
+            "title": "Connection Pool",
+            "metrics": [
+              "avg:postgresql.connections.used{service:$service}",
+              "avg:postgresql.connections.available{service:$service}",
+              "avg:postgresql.connections.used{service:$service}/avg:postgresql.connections.max{service:$service}*100"
+            ]
+          },
+          {
+            "type": "timeseries",
+            "title": "Database Resources",
+            "metrics": [
+              "avg:postgresql.cpu_percent{service:$service}",
+              "avg:postgresql.memory_percent{service:$service}",
+              "avg:postgresql.disk.usage_percent{service:$service}"
+            ]
+          }
+        ]
+      }
+    },
+    "monitors": {
+      "service-availability": {
+        "name": "Service Availability Monitor",
+        "type": "metric alert",
+        "query": "avg(last_5m):avg:http.requests{service:{{service}},status:2xx}.as_rate()/avg:http.requests{service:{{service}}}.as_rate() < 0.995",
+        "message": "🚨 Service {{service.name}} availability dropped below 99.5%\n\nCurrent success rate: {{value}}%\n\n**Immediate Actions:**\n1. Check service logs for errors\n2. Verify infrastructure health\n3. Review recent deployments\n\n@pagerduty-{{service}} @slack-{{service}}-alerts",
+        "tags": ["service:{{service}}", "type:availability", "severity:critical"],
+        "thresholds": {
+          "critical": 0.995,
+          "warning": 0.998
+        },
+        "evaluation_delay": 300,
+        "notify_no_data": true,
+        "no_data_timeframe": 10
+      },
+      "high-error-rate": {
+        "name": "High Error Rate Monitor",
+        "type": "metric alert",
+        "query": "avg(last_10m):avg:http.requests{service:{{service}},status:5xx}.as_rate()/avg:http.requests{service:{{service}}}.as_rate() > 0.05",
+        "message": "⚠️ High error rate detected for service {{service.name}}\n\nCurrent 5xx error rate: {{value}}%\nThreshold: 5%\n\n**Investigation Steps:**\n1. Check application logs for stack traces\n2. Review APM traces for failing requests\n3. Verify database and external service health\n4. Check for resource constraints\n\n@slack-{{service}}-alerts",
+        "tags": ["service:{{service}}", "type:error-rate", "severity:warning"],
+        "thresholds": {
+          "critical": 0.10,
+          "warning": 0.05
+        }
+      },
+      "response-time-degradation": {
+        "name": "Response Time Degradation",
+        "type": "metric alert",
+        "query": "avg(last_15m):avg:http.response_time.p95{service:{{service}}} > {{latency_threshold}}",
+        "message": "📈 Response time degradation for service {{service.name}}\n\nCurrent P95 latency: {{value}}ms\nThreshold: {{threshold}}ms\n\n**Performance Investigation:**\n1. Check APM traces for slow operations\n2. Review database query performance\n3. Verify CPU/memory utilization\n4. Check external service dependencies\n\n@slack-{{service}}-performance",
+        "tags": ["service:{{service}}", "type:latency", "severity:warning"],
+        "thresholds": {
+          "critical": "{{latency_threshold * 2}}",
+          "warning": "{{latency_threshold}}"
+        }
+      },
+      "database-connection-pool": {
+        "name": "Database Connection Pool Exhaustion",
+        "type": "metric alert",
+        "query": "avg(last_5m):avg:postgresql.connections.used{service:{{service}}}/avg:postgresql.connections.max{service:{{service}}} > 0.85",
+        "message": "🔗 Database connection pool near exhaustion for {{service.name}}\n\nConnection utilization: {{value}}%\nThreshold: 85%\n\n**Immediate Actions:**\n1. Check for connection leaks in application code\n2. Review long-running transactions\n3. Consider scaling connection pool size\n4. Monitor for connection timeouts\n\n@pagerduty-database @slack-{{service}}-alerts",
+        "tags": ["service:{{service}}", "type:database", "severity:warning"]
+      }
+    },
+    "slos": {
+      "service-reliability": {
+        "name": "Service Reliability SLO",
+        "description": "Service availability and error rate SLO",
+        "type": "metric",
+        "target_threshold": 99.5,
+        "warning_threshold": 99.0,
+        "time_window": "30d",
+        "sli_queries": [
+          {
+            "numerator": "sum:http.requests{service:{{service}},!status:5xx}",
+            "denominator": "sum:http.requests{service:{{service}}}"
+          }
+        ],
+        "tags": ["service:{{service}}", "type:reliability"]
+      },
+      "performance-slo": {
+        "name": "Performance SLO",
+        "description": "Response time performance SLO",
+        "type": "metric",
+        "target_threshold": 95.0,
+        "warning_threshold": 90.0,
+        "time_window": "7d",
+        "sli_queries": [
+          {
+            "numerator": "count:http.response_time{service:{{service}}} by {*}.rollup(count).fill(zero) < {{latency_target}}",
+            "denominator": "count:http.response_time{service:{{service}}} by {*}.rollup(count).fill(zero)"
+          }
+        ],
+        "tags": ["service:{{service}}", "type:performance"]
+      }
+    }
+  },
+  "service_configurations": {
+    "web_service": {
+      "latency_threshold": 500,
+      "error_rate_threshold": 0.05,
+      "success_rate_threshold": 0.995,
+      "dashboard_template": "microservice-health",
+      "monitors": ["service-availability", "high-error-rate", "response-time-degradation"]
+    },
+    "api_service": {
+      "latency_threshold": 200,
+      "error_rate_threshold": 0.01,
+      "success_rate_threshold": 0.999,
+      "dashboard_template": "microservice-health",
+      "monitors": ["service-availability", "high-error-rate", "response-time-degradation"]
+    },
+    "database_service": {
+      "latency_threshold": 100,
+      "connection_pool_threshold": 0.80,
+      "dashboard_template": "database-performance",
+      "monitors": ["database-connection-pool", "response-time-degradation"]
+    },
+    "background_worker": {
+      "error_rate_threshold": 0.02,
+      "queue_depth_threshold": 1000,
+      "processing_rate_threshold": 100,
+      "monitors": ["high-error-rate", "queue-depth-monitor"]
+    }
+  },
+  "environment_overrides": {
+    "prod": {
+      "success_rate_threshold": 0.999,
+      "alert_channels": ["@pagerduty", "@slack-critical"]
+    },
+    "staging": {
+      "success_rate_threshold": 0.995,
+      "alert_channels": ["@slack-staging"]
+    },
+    "dev": {
+      "success_rate_threshold": 0.990,
+      "alert_channels": ["@slack-dev"]
+    }
+  }
+}
