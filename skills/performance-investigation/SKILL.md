@@ -1,18 +1,21 @@
 ---
 name: performance-investigation
+argument-hint: "[service, endpoint, symptom]"
 description: >
   Deep performance analysis using APM traces, metrics, and logs to identify bottlenecks
   and optimization opportunities. Correlates database queries, external API calls,
   and resource usage to pinpoint root causes of slow performance. Use when investigating
   latency issues, throughput problems, or resource optimization needs.
 compatibility:
-  tools: [datadog-mcp-server]
+  tools: [datadog]
   dependencies: [search_datadog_spans, get_datadog_metric, analyze_datadog_logs, apm_search_spans]
 ---
 
 # Performance Investigation
 
 Comprehensive performance analysis across the full application stack to identify and resolve bottlenecks.
+When invoked directly with `/datadops:performance-investigation`, use `$ARGUMENTS` as the performance context.
+If needed, ask for the service, endpoint, environment, and time window before starting the analysis.
 
 ## Capabilities
 

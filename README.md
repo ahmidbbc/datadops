@@ -160,6 +160,7 @@ claude plugin install datadops
 ```
 
 This installs the plugin and its bundled Datadog MCP configuration.
+If you install or update the plugin during an active Claude Code session, run `/reload-plugins`.
 
 ### 2. Authenticate with Datadog
 1. Open Claude Code
@@ -170,6 +171,11 @@ This installs the plugin and its bundled Datadog MCP configuration.
 ### 3. Test Installation
 ```
 Ask Claude: "Give me a health overview of production services"
+```
+
+Or invoke the skill directly:
+```
+/datadops:service-health-overview production services
 ```
 
 [📖 **Detailed Installation Guide**](setup/installation-guide.md)
@@ -230,7 +236,7 @@ Ask Claude: "Give me a health overview of production services"
 name: your-skill-name
 description: Brief description with trigger conditions
 compatibility:
-  tools: [datadog-mcp-server]
+  tools: [datadog]
   dependencies: [list_of_required_mcp_tools]
 ---
 
@@ -258,6 +264,14 @@ MIT License - Use freely, contribute back improvements.
 - [Official Datadog MCP Server](https://docs.datadoghq.com/bits_ai/mcp_server/)
 - [Claude Code Plugins](https://claude.com/plugins)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
+
+## 🔎 Validation
+
+Run the local smoke test before publishing plugin changes:
+
+```bash
+python3 scripts/smoke_test.py
+```
 
 ---
 

@@ -1,18 +1,21 @@
 ---
 name: incident-response
+argument-hint: "[service, symptoms, environment]"
 description: >
   Comprehensive incident response workflow using Datadog observability data.
   Automatically investigates service issues by correlating logs, metrics, APM traces,
   and infrastructure data. Creates incident timeline and actionable recommendations.
   Use when investigating production issues, service outages, or performance degradations.
 compatibility:
-  tools: [datadog-mcp-server]
-  dependencies: [search_datadog_logs, get_datadog_metric, search_datadog_spans, search_datadog_monitors]
+  tools: [datadog]
+  dependencies: [search_datadog_logs, get_datadog_metric, search_datadog_spans, search_datadog_monitors, search_datadog_events]
 ---
 
 # Incident Response Workflow
 
 Orchestrates a complete incident investigation using Datadog's observability stack.
+When invoked directly with `/datadops:incident-response`, use `$ARGUMENTS` as the investigation context.
+If key context is missing, ask for the affected service, environment, and timeframe before proceeding.
 
 ## Capabilities
 

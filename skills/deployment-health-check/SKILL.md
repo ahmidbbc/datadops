@@ -1,18 +1,21 @@
 ---
 name: deployment-health-check
+argument-hint: "[service, version, environment]"
 description: >
   Automated post-deployment health verification using Datadog metrics, logs, and APM data.
   Compares service health before/after deployment, detects regressions, and provides
   rollback recommendations. Use after deployments to validate release success and
   catch issues early.
 compatibility:
-  tools: [datadog-mcp-server]
+  tools: [datadog]
   dependencies: [get_datadog_metric, search_datadog_logs, search_datadog_spans, search_datadog_events]
 ---
 
 # Deployment Health Check
 
 Validates deployment success through comprehensive health monitoring and regression detection.
+When invoked directly with `/datadops:deployment-health-check`, use `$ARGUMENTS` as the deployment context.
+If needed, ask for the service name, version, environment, and deployment window before continuing.
 
 ## Capabilities
 
@@ -156,14 +159,12 @@ Validates deployment success through comprehensive health monitoring and regress
 ## Integration Patterns
 
 ### CI/CD Pipeline Integration
-```yaml
-# Example GitHub Actions integration
-- name: Post-deployment Health Check
-  run: |
-    claude skill deployment-health-check \
-      --service=$SERVICE_NAME \
-      --version=$GITHUB_SHA \
-      --environment=$ENVIRONMENT
+```bash
+# Claude Code interactive invocation
+/datadops:deployment-health-check payment service version 2.1.4 in production
+
+# Prompt-based automation example
+claude -p "Validate deployment health for $SERVICE_NAME version $GITHUB_SHA in $ENVIRONMENT. Compare pre-deployment and post-deployment metrics, logs, spans, and events, then give a go/no-go recommendation."
 ```
 
 ### Automated Rollback Triggers

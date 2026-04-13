@@ -1,18 +1,21 @@
 ---
 name: service-health-overview
+argument-hint: "[service, team, or environment]"
 description: >
   Quick service health assessment providing a comprehensive overview of current
   service status using key metrics, active alerts, and recent events. Perfect
   for daily health checks, incident triage, or getting rapid service insights.
   Use when you need fast service status or as a starting point for deeper investigation.
 compatibility:
-  tools: [datadog-mcp-server]
+  tools: [datadog]
   dependencies: [search_datadog_monitors, get_datadog_metric, search_datadog_events, search_datadog_services]
 ---
 
 # Service Health Overview
 
 Rapid service health assessment providing actionable insights in under 60 seconds.
+When invoked directly with `/datadops:service-health-overview`, use `$ARGUMENTS` as the scope for the report.
+If the scope is unclear, ask whether to focus on a service, a team, or an environment.
 
 ## Capabilities
 
@@ -275,11 +278,12 @@ Recommended Actions:
 
 ### Scheduled Health Checks
 ```bash
-# Daily health report
-0 9 * * * claude skill service-health-overview --all-services --format summary
+# Claude Code interactive invocation
+/datadops:service-health-overview critical production services
 
-# Hourly critical service monitoring  
-0 * * * * claude skill service-health-overview --services critical --alerts-only
+# Prompt-based automation examples
+0 9 * * * claude -p "Give me a health overview of all critical production services. Summarize health scores, active alerts, recent events, and the top recommended actions."
+0 * * * * claude -p "Give me a health overview of critical services and mention only active alerts, regressions, and immediate actions."
 ```
 
 ### Alert Integration

@@ -20,6 +20,12 @@ The plugin bundles the Datadog MCP server configuration, so users do not need to
 claude plugin install datadops
 ```
 
+If you install or update the plugin during an active Claude Code session, run:
+
+```text
+/reload-plugins
+```
+
 **What this does:**
 - Installs the DatadOps plugin
 - Registers the official Datadog MCP server configuration bundled with the plugin
@@ -154,16 +160,16 @@ You can customize health thresholds per service:
 
 ### Workflow Integration
 
-```bash
+```yaml
 # CI/CD pipeline integration
 - name: Post-deployment Health Check
   run: |
-    claude ask "Validate deployment health for $SERVICE_NAME version $VERSION"
+    claude -p "Validate deployment health for $SERVICE_NAME version $VERSION in $ENVIRONMENT. Compare pre-deployment and post-deployment metrics, logs, spans, and events, then return a go/no-go recommendation."
 
 # Incident response runbook
 - name: Automated Investigation
   run: |
-    claude ask "Investigate incident in $SERVICE_NAME service"
+    claude -p "Investigate the incident affecting $SERVICE_NAME in $ENVIRONMENT. Correlate monitors, logs, spans, and recent events, then provide severity, likely root cause, and immediate next steps."
 ```
 
 ## Troubleshooting
