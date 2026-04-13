@@ -4,7 +4,7 @@
 
 ## ✨ What is DatadOps?
 
-A **lightweight wrapper plugin** that adds intelligent workflows on top of the [official Datadog MCP server](https://docs.datadoghq.com/bits_ai/mcp_server/). While the official server provides access to raw Datadog data, this plugin orchestrates that data into complete operational workflows.
+A **lightweight Claude Code plugin** that bundles the [official Datadog MCP server](https://docs.datadoghq.com/bits_ai/mcp_server/) configuration and adds intelligent workflows on top of it. The official server provides access to raw Datadog data; DatadOps orchestrates that data into complete operational workflows.
 
 ### 🆚 Official MCP Server vs DatadOps
 
@@ -154,22 +154,20 @@ NEXT CHECKPOINT: Monitor for 2 hours, validate at high traffic
 
 ## 🛠 Installation
 
-### 1. Install Official Datadog MCP Server
-```bash
-claude mcp add --scope user --transport http datadog https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,apm,dashboards,alerting,ddsql
-```
-
-### 2. Authenticate with Datadog
-1. Type `/mcp` in Claude Code
-2. Select "datadog" → Authenticate
-3. Complete OAuth flow in browser
-
-### 3. Install DatadOps Plugin
+### 1. Install DatadOps Plugin
 ```bash
 claude plugin install datadops
 ```
 
-### 4. Test Installation
+This installs the plugin and its bundled Datadog MCP configuration.
+
+### 2. Authenticate with Datadog
+1. Open Claude Code
+2. Type `/mcp`
+3. Select `datadog` → Authenticate
+4. Complete the OAuth flow in your browser
+
+### 3. Test Installation
 ```
 Ask Claude: "Give me a health overview of production services"
 ```

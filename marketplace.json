@@ -5,14 +5,14 @@
     "email": "abdelhamid.benmeziane@adevinta.com"
   },
   "metadata": {
-    "description": "Advanced Datadog workflows and intelligent monitoring automation",
+    "description": "Claude Code plugin marketplace for Datadog workflow automation and observability integrations",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "datadops",
       "source": "./",
-      "description": "Intelligent Datadog workflows for incident response, performance investigation, and deployment validation. Transforms raw monitoring data into actionable insights.",
+      "description": "Claude Code plugin that bundles the official Datadog MCP configuration and adds intelligent workflows for incident response, performance investigation, and deployment validation.",
       "version": "1.0.0",
       "author": {
         "name": "Abdelhamid Benmeziane",
@@ -23,6 +23,9 @@
       "license": "MIT",
       "keywords": [
         "datadog",
+        "mcp",
+        "claude-code",
+        "plugin",
         "monitoring",
         "observability",
         "incident-response",

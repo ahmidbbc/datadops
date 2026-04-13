@@ -1,13 +1,16 @@
 {
   "name": "datadops",
   "version": "1.0.0",
-  "description": "Intelligent Datadog workflows for incident response, performance investigation, and deployment validation. Transforms raw monitoring data into actionable insights.",
+  "description": "Claude Code plugin that bundles the official Datadog MCP configuration and adds intelligent workflows for incident response, performance investigation, and deployment validation.",
   "author": {
     "name": "Abdelhamid Benmeziane"
   },
   "license": "MIT",
   "keywords": [
     "datadog",
+    "mcp",
+    "claude-code",
+    "plugin",
     "monitoring",
     "observability",
     "incident-response",

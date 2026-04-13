@@ -104,7 +104,7 @@
 
 ## 🎨 **Plugin Architecture Evolution**
 
-### **Current: Intelligent Wrapper**
+### **Current: Integrated Datadog Plugin**
 ```
 Claude Code → Plugin Skills → Datadog MCP Server → Datadog API
 ```

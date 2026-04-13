@@ -3,6 +3,7 @@
 ## Overview
 
 The DatadOps plugin provides intelligent workflows on top of the official Datadog MCP server, enabling advanced incident response, performance investigation, and deployment validation capabilities.
+The plugin bundles the Datadog MCP server configuration, so users do not need to run `claude mcp add ...` manually.
 
 ## Prerequisites
 
@@ -12,18 +13,18 @@ The DatadOps plugin provides intelligent workflows on top of the official Datado
 
 ## Installation Steps
 
-### 1. Install Datadog MCP Server
+### 1. Install the DatadOps Plugin
 
 ```bash
-# Add the official Datadog MCP server to Claude Code
-claude mcp add --scope user --transport http datadog "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,apm,dashboards,alerting,ddsql"
+# Install the plugin from your configured marketplace
+claude plugin install datadops
 ```
 
 **What this does:**
-- Connects Claude Code to Datadog's official MCP server
-- Enables core monitoring tools (metrics, logs, traces, monitors)
-- Includes APM, dashboards, alerting, and DDSQL toolsets
-- Uses user scope (available across all your projects)
+- Installs the DatadOps plugin
+- Registers the official Datadog MCP server configuration bundled with the plugin
+- Exposes the Datadog monitoring tools needed by the DatadOps skills
+- Makes the workflows available in Claude Code
 
 ### 2. Authenticate with Datadog
 
@@ -35,20 +36,13 @@ claude mcp add --scope user --transport http datadog "https://mcp.datadoghq.com/
 6. **Click "Allow Access"** to authorize Claude Code
 7. **Return to Claude Code** - should see "Authentication successful"
 
-### 3. Install the DatadOps Plugin
-
-```bash
-# Install the workflow plugin (method depends on your plugin manager)
-claude plugin install datadops
-```
-
-Or manually:
+If you are installing the plugin manually instead of through a marketplace:
 ```bash
 # Clone/copy the plugin to your Claude plugins directory
 cp -r datadops ~/.claude/plugins/
 ```
 
-### 4. Verify Installation
+### 3. Verify Installation
 
 Test that everything works:
 
@@ -57,7 +51,7 @@ Ask Claude: "Give me a health overview of our production services"
 ```
 
 **Expected result:**
-- Claude uses the datadog MCP server to fetch data
+- Claude uses the bundled `datadog` MCP server to fetch data
 - The service-health-overview skill provides structured analysis
 - You get a comprehensive health dashboard
 
@@ -203,8 +197,9 @@ You can customize health thresholds per service:
 **Problem**: Claude doesn't use the Datadog skills
 **Solution**:
 1. Verify the plugin is properly installed
-2. Use more specific trigger phrases from the skill descriptions
-3. Explicitly mention the service or environment name
+2. Verify the bundled `datadog` MCP server appears in `/mcp`
+3. Use more specific trigger phrases from the skill descriptions
+4. Explicitly mention the service or environment name
 
 ## Rate Limits
 
