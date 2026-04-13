@@ -74,9 +74,13 @@ def check_skill_files():
         if "tools: [datadog]" not in frontmatter:
             fail(f"{path}: compatibility.tools must be [datadog]")
 
+        if "argument-hint:" not in frontmatter:
+            fail(f"{path}: missing argument-hint")
+
         dep_match = re.search(r"dependencies:\s*\[([^\]]*)\]", frontmatter)
         if not dep_match:
             fail(f"{path}: missing compatibility.dependencies list")
+            deps = []
         else:
             deps = [item.strip() for item in dep_match.group(1).split(",") if item.strip()]
             invalid = [dep for dep in deps if dep not in VALID_DEPENDENCIES]
