@@ -4,9 +4,7 @@
 
 ## 🎬 Demo
 
-[![DatadOps demo teaser](docs/assets/datadops-demo-teaser.gif)](docs/assets/datadops_demo.mp4)
-
-[Long demo version](docs/assets/datadops_demo.mp4)
+https://github.com/user-attachments/assets/d7403866-67db-448b-8fee-f58beeed79fc
 
 ## ✨ What is DatadOps?
 
