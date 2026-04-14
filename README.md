@@ -2,6 +2,12 @@
 
 **Advanced Datadog workflows for Claude Code** - Transforms raw monitoring data into actionable insights through intelligent DatadOps automation.
 
+## 🎬 Demo
+
+[![DatadOps demo teaser](docs/assets/datadops-demo-teaser.gif)](docs/assets/datadops_demo.mp4)
+
+[Long demo version](docs/assets/datadops_demo.mp4)
+
 ## ✨ What is DatadOps?
 
 A **lightweight Claude Code plugin** that bundles the [official Datadog MCP server](https://docs.datadoghq.com/bits_ai/mcp_server/) configuration and adds intelligent workflows on top of it. The official server provides access to raw Datadog data; DatadOps orchestrates that data into complete operational workflows.
