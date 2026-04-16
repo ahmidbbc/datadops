@@ -130,6 +130,17 @@
         "query": "avg(last_5m):avg:postgresql.connections.used{service:{{service}}}/avg:postgresql.connections.max{service:{{service}}} > 0.85",
         "message": "🔗 Database connection pool near exhaustion for {{service.name}}\n\nConnection utilization: {{value}}%\nThreshold: 85%\n\n**Immediate Actions:**\n1. Check for connection leaks in application code\n2. Review long-running transactions\n3. Consider scaling connection pool size\n4. Monitor for connection timeouts\n\n@pagerduty-database @slack-{{service}}-alerts",
         "tags": ["service:{{service}}", "type:database", "severity:warning"]
+      },
+      "queue-depth-monitor": {
+        "name": "Queue Depth Backlog",
+        "type": "metric alert",
+        "query": "avg(last_10m):avg:queue.depth{service:{{service}}} > {{queue_depth_threshold}}",
+        "message": "📬 Queue backlog detected for {{service.name}}\n\nCurrent queue depth: {{value}}\nThreshold: {{threshold}}\n\n**Immediate Actions:**\n1. Check worker throughput and failures\n2. Inspect recent job retries or poison messages\n3. Verify downstream dependencies and rate limits\n4. Scale worker concurrency if backlog persists\n\n@slack-{{service}}-alerts",
+        "tags": ["service:{{service}}", "type:queue", "severity:warning"],
+        "thresholds": {
+          "critical": "{{queue_depth_threshold * 2}}",
+          "warning": "{{queue_depth_threshold}}"
+        }
       }
     },
     "slos": {

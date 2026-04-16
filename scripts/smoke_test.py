@@ -24,6 +24,7 @@ def load_json(path: Path):
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
         fail(f"{path}: invalid JSON ({exc})")
+        return None
 
 
 def fail(message: str):
@@ -40,8 +41,11 @@ def extract_frontmatter(path: Path, text: str) -> str:
 
 def check_json_files():
     plugin = load_json(ROOT / ".claude-plugin" / "plugin.json")
-    marketplace = load_json(ROOT / "marketplace.json")
+    marketplace = load_json(ROOT / ".claude-plugin" / "marketplace.json")
     mcp = load_json(ROOT / ".mcp.json")
+
+    if not all(isinstance(obj, dict) for obj in (plugin, marketplace, mcp)):
+        return
 
     if plugin.get("name") != "datadops":
         fail("plugin.json: expected plugin name 'datadops'")
@@ -62,6 +66,46 @@ def check_json_files():
             fail(".mcp.json: datadog server must use type 'http'")
         if "datadoghq.com" not in datadog.get("url", ""):
             fail(".mcp.json: datadog server URL must target Datadog")
+
+
+def check_templates():
+    config = load_json(ROOT / "templates" / "monitoring-templates.json")
+    if not isinstance(config, dict):
+        return
+
+    templates = config.get("templates", {})
+    monitors = templates.get("monitors", {})
+    dashboards = templates.get("dashboards", {})
+    service_configurations = config.get("service_configurations", {})
+
+    if not isinstance(monitors, dict):
+        fail("templates/monitoring-templates.json: templates.monitors must be an object")
+        return
+    if not isinstance(dashboards, dict):
+        fail("templates/monitoring-templates.json: templates.dashboards must be an object")
+        return
+    if not isinstance(service_configurations, dict):
+        fail("templates/monitoring-templates.json: service_configurations must be an object")
+        return
+
+    for service_name, service_config in service_configurations.items():
+        if not isinstance(service_config, dict):
+            fail(f"templates/monitoring-templates.json: {service_name} config must be an object")
+            continue
+
+        dashboard_name = service_config.get("dashboard_template")
+        if dashboard_name and dashboard_name not in dashboards:
+            fail(
+                "templates/monitoring-templates.json: "
+                f"{service_name} references unknown dashboard '{dashboard_name}'"
+            )
+
+        for monitor_name in service_config.get("monitors", []):
+            if monitor_name not in monitors:
+                fail(
+                    "templates/monitoring-templates.json: "
+                    f"{service_name} references unknown monitor '{monitor_name}'"
+                )
 
 
 def check_skill_files():
@@ -104,6 +148,7 @@ def check_docs():
 def main():
     check_json_files()
     check_skill_files()
+    check_templates()
     check_docs()
 
     if ERRORS:
